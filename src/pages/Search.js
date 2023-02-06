@@ -84,6 +84,7 @@ class Search extends Component {
                 <p>{e.artistName}</p>
                 <p>{e.collectionName}</p>
                 <Link
+                  collectionid={ e.collectionId }
                   data-testid={ `link-to-album-${e.collectionId}` }
                   to={ `/album/${e.collectionId}` }
                 >
