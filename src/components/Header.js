@@ -15,8 +15,7 @@ class Header extends Component {
 
   awaitGetUser = async () => {
     const user = await getUser();
-    this.setState({ userName: user.name });
-    this.setState({ loading: false });
+    this.setState({ userName: user.name, loading: false });
   };
 
   render() {
