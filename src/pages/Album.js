@@ -8,7 +8,7 @@ class Album extends Component {
   state = {
     artistName: '',
     albumName: '',
-    musicUrl: [],
+    musicList: [],
   };
 
   componentDidMount() {
@@ -24,19 +24,19 @@ class Album extends Component {
     this.setState({
       artistName: data[0].artistName,
       albumName: data[0].collectionName,
-      musicUrl: data.filter((e) => e.kind),
+      musicList: data.filter((e) => e.kind),
     });
   };
 
   render() {
-    const { albumName, artistName, musicUrl } = this.state;
+    const { albumName, artistName, musicList } = this.state;
     return (
       <div data-testid="page-album">
         <Header />
         <h1 data-testid="artist-name">{`Artist Name: ${artistName}`}</h1>
         <h1 data-testid="album-name">{`Collection Name: ${albumName}`}</h1>
         <MusicCard
-          musiclist={ musicUrl }
+          musiclist={ musicList }
         />
       </div>
     );

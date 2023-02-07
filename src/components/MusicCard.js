@@ -14,10 +14,20 @@ class MusicCard extends Component {
   }
 
   handleClick = async (objectAlbum) => {
-    this.setState({ loadingFavorite: true });
-    await addSong(objectAlbum);
-    this.setState({ loadingFavorite: false });
-    await removeSong(objectAlbum);
+    const { checked } = this.state;
+    const { trackId } = objectAlbum;
+    const { onStateChange } = this.props;
+    if (!checked[trackId]) {
+      this.setState({ loadingFavorite: true });
+      await addSong(objectAlbum);
+      this.setState({ loadingFavorite: false });
+    }
+    if (checked[trackId]) {
+      this.setState({ loadingFavorite: true });
+      await removeSong(objectAlbum);
+      this.setState({ loadingFavorite: false });
+    }
+    onStateChange();
   };
 
   saveFavoriteSongs = async () => {
@@ -61,17 +71,22 @@ class MusicCard extends Component {
             O seu navegador não suporta o elemento
             <code>{trackId}</code>
           </audio>
-          <input
-            type="checkbox"
-            data-testid={ `checkbox-music-${trackId}` }
-            checked={ checked[trackId] }
-            onChange={ () => this.handleChange(trackId) }
-            onClick={ () => this.handleClick(e) }
-          />
+
+          <label htmlFor="favorita">
+            Favorita
+            <input
+              type="checkbox"
+              id="favorita"
+              data-testid={ `checkbox-music-${trackId}` }
+              checked={ checked[trackId] }
+              onChange={ () => this.handleChange(trackId) }
+              onClick={ () => this.handleClick(e) }
+            />
+          </label>
         </div>
       );
       return element;
-    }) : <Loading />;
+    }) : '';
     return (
       <div>
         {loadingFavorite ? <Loading /> : renderMusic}
@@ -81,6 +96,7 @@ class MusicCard extends Component {
 }
 
 MusicCard.propTypes = {
+  onStateChange: PropTypes.func.isRequired,
   musiclist: PropTypes.arrayOf(
     PropTypes.shape({
       map: PropTypes.func,
