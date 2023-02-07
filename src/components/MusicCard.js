@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Loading from '../pages/Loading';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 
 class MusicCard extends Component {
   state = {
@@ -9,10 +9,29 @@ class MusicCard extends Component {
     checked: {},
   };
 
-  handleClick = async (trackId) => {
+  componentDidMount() {
+    this.saveFavoriteSongs();
+  }
+
+  handleClick = async (objectAlbum) => {
     this.setState({ loadingFavorite: true });
-    await addSong(trackId);
+    await addSong(objectAlbum);
     this.setState({ loadingFavorite: false });
+  };
+
+  saveFavoriteSongs = async () => {
+    this.setState({ loadingFavorite: true });
+    await getFavoriteSongs();
+    const data = await getFavoriteSongs();
+    this.setState({ loadingFavorite: false });
+    data.forEach((e) => {
+      this.setState((prevState) => ({
+        checked: {
+          ...prevState.checked,
+          [e.trackId]: !prevState[e.trackId],
+        },
+      }));
+    });
   };
 
   handleChange = (trackId) => {
@@ -26,7 +45,7 @@ class MusicCard extends Component {
 
   render() {
     const { loadingFavorite, checked } = this.state;
-    const { musiclist, collectionid } = this.props;
+    const { musiclist } = this.props;
     const renderMusic = musiclist.length ? musiclist.map((e) => {
       const { trackId, trackName, previewUrl } = e;
       const element = (
@@ -46,7 +65,7 @@ class MusicCard extends Component {
             data-testid={ `checkbox-music-${trackId}` }
             checked={ checked[trackId] }
             onChange={ () => this.handleChange(trackId) }
-            onClick={ async () => { await this.handleClick(trackId); } }
+            onClick={ () => this.handleClick(e) }
           />
         </div>
       );
@@ -61,7 +80,6 @@ class MusicCard extends Component {
 }
 
 MusicCard.propTypes = {
-  collectionid: PropTypes.number.isRequired,
   musiclist: PropTypes.arrayOf(
     PropTypes.shape({
       map: PropTypes.func,
