@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Header from '../components/Header';
 import MusicCard from '../components/MusicCard';
+import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 import getMusics from '../services/musicsAPI';
 
 class Album extends Component {
@@ -28,6 +29,14 @@ class Album extends Component {
     });
   };
 
+  loadFavoriteSongs = async () => {
+    await getFavoriteSongs();
+    const data = await getFavoriteSongs();
+    this.setState({
+      musicList: data,
+    });
+  };
+
   render() {
     const { albumName, artistName, musicList } = this.state;
     return (
@@ -37,6 +46,7 @@ class Album extends Component {
         <h1 data-testid="album-name">{`Collection Name: ${albumName}`}</h1>
         <MusicCard
           musiclist={ musicList }
+          onStateChange={ this.loadFavoriteSongs }
         />
       </div>
     );
