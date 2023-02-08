@@ -44,6 +44,7 @@ class Profile extends Component {
         <Header />
         <Link to="/profile/edit">Editar perfil</Link>
         { loading ? <Loading /> : userElement}
+        teste teste
       </div>
     );
   }
