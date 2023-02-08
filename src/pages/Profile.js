@@ -11,7 +11,6 @@ class Profile extends Component {
     email: '',
     description: '',
     userImg: '',
-    perfilMessage: 'Editar perfil',
   };
 
   componentDidMount() {
@@ -31,7 +30,7 @@ class Profile extends Component {
   };
 
   render() {
-    const { loading, name, email, description, userImg, perfilMessage } = this.state;
+    const { loading, name, email, description, userImg } = this.state;
     const userElement = (
       <>
         <p>{email}</p>
@@ -43,7 +42,7 @@ class Profile extends Component {
     return (
       <div data-testid="page-profile">
         <Header />
-        <Link to="/profile/edit">{perfilMessage}</Link>
+        <Link to="/profile/edit">Editar perfil</Link>
         { loading ? <Loading /> : userElement}
       </div>
     );

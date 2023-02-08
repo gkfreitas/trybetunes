@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { getUser, updateUser } from '../services/userAPI';
 import Loading from './Loading';
@@ -16,7 +17,6 @@ class ProfileEdit extends Component {
 
   componentDidMount() {
     this.userInfos();
-
     this.handleButton();
   }
 
@@ -127,7 +127,7 @@ class ProfileEdit extends Component {
             />
           </form>
         )}
-
+        <Link to="/profile/edit">Editar perfil</Link>
       </div>
     );
   }
